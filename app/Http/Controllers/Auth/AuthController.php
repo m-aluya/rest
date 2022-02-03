@@ -19,8 +19,8 @@ class AuthController extends Controller
 //             'email' => 'required|email',
 //             'password' => 'required',
 //         ]);
+        dd($request->all());
         if (!auth()->attempt($request->only('email', 'password'), $request->remember)) {
-            dd($request->all());
             return redirect()->back()->with([
                 'message' => 'Invalid login credentials. Please try again.',
             ]);
