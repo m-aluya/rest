@@ -47,7 +47,7 @@
                            
                             <a class="dropdown-item" href="{{route('password')}}">Change password</a>
                             <a class="dropdown-item">
-                                <form id="lgf" method="post" action="logout">
+                                <form id="lgf" method="post" action="{{route('logout')}}">
                                     @csrf
 <label id="lg">   Sign out</label>
                                 </form>
