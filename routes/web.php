@@ -19,8 +19,8 @@ use App\Http\Controllers\Dashboard\DashController;
 |
 */
 
-Route::get('/', [AuthController::class, 'login'])->name('login');
-Route::post('/', [AuthController::class, 'loginx'])->name('login.post');
+Route::get('/', [AuthController::class, 'index'])->name('login');
+Route::post('/logi', [AuthController::class, 'login'])->name('login.post');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 
