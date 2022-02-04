@@ -8,12 +8,12 @@ use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
-    public function login()
+    public function index()
     {
         return view('auth.login');
     }
 
-    public function loginx(Request $request)
+    public function login(Request $request)
     {
         $this->validate($request, [
             'email' => 'required|email',
