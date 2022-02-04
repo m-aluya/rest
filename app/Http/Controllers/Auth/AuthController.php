@@ -15,11 +15,11 @@ class AuthController extends Controller
 
     public function loginx(Request $request)
     {
-//         $this->validate($request, [
-//             'email' => 'required|email',
-//             'password' => 'required',
-//         ]);
-        dd($request->all());
+        $this->validate($request, [
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
+
         if (!auth()->attempt($request->only('email', 'password'), $request->remember)) {
             return redirect()->back()->with([
                 'message' => 'Invalid login credentials. Please try again.',
