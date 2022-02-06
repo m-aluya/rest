@@ -39,8 +39,8 @@ class DashController extends Controller
     public function payments()
     {
         $payments = DB::table('payment_transactions')
-            ->join('customers', 'payment_transactions.user_id', '=', 'customers.id')
-            ->select('payment_transactions.id', 'customers.name as customer', 'payment_transactions.channel', 'payment_transactions.trans_status', 'payment_transactions.created_at')
+            ->join('users', 'payment_transactions.user_id', '=', 'users.id')
+            ->select('payment_transactions.id', 'users.name as customer', 'payment_transactions.channel', 'payment_transactions.trans_status', 'payment_transactions.created_at')
             ->orderBy('payment_transactions.id', 'desc')
             ->get();
         // $payments = DB::table('payment_transactions')->get(['id', 'cust_id', 'channel', 'trans_status']);
@@ -69,7 +69,7 @@ class DashController extends Controller
         $orders = DB::table('orders')
             ->join('customers', 'user_id', '=', 'customers.id')
             ->join('users', 'merchant_id', '=', 'users.id')
-            ->select('orders.id', 'orders.pepperestfees', 'orders.total', 'orders.totalprice', 'orders.orderRef',  'customers.name', 'users.name as merchant')
+            ->select('orders.id', 'orders.pepperestfees', 'orders.total', 'orders.totalprice', 'orders.orderRef', 'orders.created_at',  'customers.name', 'users.name as merchant')
             ->orderBy('orders.id', 'desc')
             ->get();
 
