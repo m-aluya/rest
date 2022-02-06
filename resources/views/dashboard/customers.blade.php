@@ -22,6 +22,7 @@
                                     <th class="sorting_asc" tabindex="0" aria-controls="zero_configuration_table" rowspan="1" colspan="1" style="width: 46px;">Business Name</th>
                                     <th class="sorting_asc" tabindex="0" aria-controls="zero_configuration_table" rowspan="1" colspan="1" style="width: 46px;">Phone</th>
                                     <th class="sorting" tabindex="0" aria-controls="zero_configuration_table" rowspan="1" colspan="1" aria-label="Office: activate to sort column ascending" style="width: 29px;">Email address</th>
+                                    <th class="sorting" tabindex="0" aria-controls="zero_configuration_table" rowspan="1" colspan="1" aria-label="Office: activate to sort column ascending" style="width: 29px;">Registration Date</th>
                                 <th class="sorting" tabindex="0" aria-controls="zero_configuration_table" rowspan="1" colspan="1" aria-label="Age: activate to sort column ascending" style="width: 26px;"></th>
                                 </tr>
                             </thead>
@@ -34,7 +35,7 @@
                                     <td class="text-capitalize">{{ $item->businessname }}</td>
                                     <td class="text-capitalize"><a title="click to call" href="tel:{{ $item->phone }}">{{ $item->phone }}</a></td>
                                     <td class="text-lowercase">{{$item->email }}</td>
-                                  
+                                    <td class="text-lowercase">{{$item->reg_date }}</td>
                                   
                                     <td><a href="{{ route('cdetails', ['id' => $item->id]) }}" class="btn btn-primary btn-sm pl-3 pr-3">Details</a></td>
                               

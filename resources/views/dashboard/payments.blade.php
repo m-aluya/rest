@@ -20,6 +20,7 @@
                                     <th class="sorting_asc" tabindex="0" aria-controls="zero_configuration_table" rowspan="1" colspan="1" style="width: 46px;">Customer</th>
                                     <th class="sorting" tabindex="0" aria-controls="zero_configuration_table" rowspan="1" colspan="1" aria-label="Position: activate to sort column ascending" style="width: 53px;">Channel</th>
                                     <th class="sorting" tabindex="0" aria-controls="zero_configuration_table" rowspan="1" colspan="1" aria-label="Office: activate to sort column ascending" style="width: 39px;">Status</th>
+                                    <th class="sorting" tabindex="0" aria-controls="zero_configuration_table" rowspan="1" colspan="1" aria-label="Office: activate to sort column ascending" style="width: 39px;">Date</th>
                                     <th class="sorting" tabindex="0" aria-controls="zero_configuration_table" rowspan="1" colspan="1" aria-label="Age: activate to sort column ascending" style="width: 26px;">Details</th>
                                 </tr>
                             </thead>
@@ -30,6 +31,7 @@
                                     <td class="text-capitalise">{{ $item->customer }}</td>
                                     <td>{{ $item->channel }}</td>
                                     <td>{{ $item->trans_status }}</td>
+                                    <td>{{ $item->created_at }}</td>
                                   
                                     <td><a href="{{ route('payment.details', ['id' => $item->id]) }}" class="btn btn-primary btn-sm pl-3 pr-3">Details</a></td>
                               

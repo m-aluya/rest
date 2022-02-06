@@ -24,6 +24,7 @@
                                     <th class="sorting" tabindex="0" aria-controls="zero_configuration_table" rowspan="1" colspan="1" aria-label="Office: activate to sort column ascending" style="width: 39px;">Total(&#x20A6;)</th>
                                     <th class="sorting_asc" tabindex="0" aria-controls="zero_configuration_table" rowspan="1" colspan="1" style="width: 46px;">Merchant</th>
                                     <th class="sorting" tabindex="0" aria-controls="zero_configuration_table" rowspan="1" colspan="1" aria-label="Office: activate to sort column ascending" style="width: 39px;">Customer Name</th>
+                                    <th class="sorting" tabindex="0" aria-controls="zero_configuration_table" rowspan="1" colspan="1" aria-label="Office: activate to sort column ascending" style="width: 39px;">Date</th>
                                     <th class="sorting" tabindex="0" aria-controls="zero_configuration_table" rowspan="1" colspan="1" aria-label="Age: activate to sort column ascending" style="width: 26px;">Details</th>
                                 </tr>
                             </thead>
@@ -37,7 +38,7 @@
                                     <td class="text-capitalize">{{ $item->merchantName }}</td>
                                     <td>{{ $item->customerName }}</td>
                                    
-                                  
+                                    <td>{{ Carbon\Carbon::parse($item->created_at)->format('d M Y')}}</td>
                                   
                                     <td><a href="{{ route('invoices.details', ['id' => $item->id]) }}" class="btn btn-primary btn-sm pl-3 pr-3">Details</a></td>
                               
