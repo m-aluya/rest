@@ -22,7 +22,8 @@ class DashController extends Controller
 
     public function index()
     {
-        $collection = DB::table('transactions')->get(['id', 'pepperest_fee', 'customer_email', 'merchant_email', 'amount', 'description']);
+        $collection = DB::table('transactions')->orderBy('id', 'desc')
+                         ->get(['id', 'pepperest_fee', 'customer_email', 'merchant_email', 'amount', 'description', 'posting_date']);
 
         return view('dashboard.transactions', ['records' => collect($collection)]);
     }
@@ -39,7 +40,8 @@ class DashController extends Controller
     {
         $payments = DB::table('payment_transactions')
             ->join('customers', 'payment_transactions.user_id', '=', 'customers.id')
-            ->select('payment_transactions.id', 'customers.name as customer', 'payment_transactions.channel', 'payment_transactions.trans_status')
+            ->select('payment_transactions.id', 'customers.name as customer', 'payment_transactions.channel', 'payment_transactions.trans_status', 'payment_transactions.created_at')
+            ->orderBy('payment_transactions.id', 'desc')
             ->get();
         // $payments = DB::table('payment_transactions')->get(['id', 'cust_id', 'channel', 'trans_status']);
         return view('dashboard.payments', ['payments' => collect($payments)]);
@@ -68,6 +70,7 @@ class DashController extends Controller
             ->join('customers', 'user_id', '=', 'customers.id')
             ->join('users', 'merchant_id', '=', 'users.id')
             ->select('orders.id', 'orders.pepperestfees', 'orders.total', 'orders.totalprice', 'orders.orderRef',  'customers.name', 'users.name as merchant')
+            ->orderBy('orders.id', 'desc')
             ->get();
 
         //$orders = DB::table('orders')->get(['id', 'buyer_id', 'pepperestfees', 'total', 'totalprice', 'merchant_id', 'orderRef']);
@@ -93,7 +96,7 @@ class DashController extends Controller
 
     public function invoices()
     {
-        $invoices = DB::table('invoices')->get(['id', 'totalcost', 'merchantName', 'customerName', 'pepperest_fee', 'vat', 'totalcost', 'subTotal']);
+        $invoices = DB::table('invoices')->orderBy('id', 'desc')->get(['id', 'totalcost', 'merchantName', 'customerName', 'pepperest_fee', 'vat', 'totalcost', 'subTotal', 'created_at']);
         return view('dashboard.invoices', ['invoices' => $invoices]);
     }
 
@@ -112,7 +115,7 @@ class DashController extends Controller
 
     public function disputes()
     {
-        $data = DB::table('disputes')->get(['id', 'placed_order_id', 'created_at', 'customer_email', 'arbitrator_name', 'dispute_referenceid', 'dispute_status', 'dispute_category', 'merchant_email']);
+        $data = DB::table('disputes')->orderBy('id', 'desc')->get(['id', 'placed_order_id', 'created_at', 'customer_email', 'arbitrator_name', 'dispute_referenceid', 'dispute_status', 'dispute_category', 'merchant_email']);
         return view('dashboard.disputes', ['data' => $data]);
     }
 
@@ -141,13 +144,13 @@ class DashController extends Controller
 
     public function shipment()
     {
-        $data = DB::table('order_logistics')->get(['id', 'order_id', 'estimated_days', 'amount', 'delivery_status', 'updated_at', 'type']);
+        $data = DB::table('order_logistics')->orderBy('id', 'desc')->get(['id', 'order_id', 'estimated_days', 'amount', 'delivery_status', 'updated_at', 'type']);
         return view('dashboard.shipment', ['data' => $data]);
     }
     public function shipmentBooked($md)
     {
 
-        $data = collect(Shipments::where('delivery_status', $md)->get());
+        $data = collect(Shipments::where('delivery_status', $md)->orderBy('id', 'desc')->get());
 
         return view('dashboard.booked_shipment', ['data' => $data]);
     }
@@ -166,7 +169,7 @@ class DashController extends Controller
     public function audit_trails()
     {
 
-        $data = DB::table('audit_trails')->get(['id', 'user_ip', 'user_id', 'event', 'location', 'created_at']);
+        $data = DB::table('audit_trails')->orderBy('id', 'desc')->get(['id', 'user_ip', 'user_id', 'event', 'location', 'created_at']);
         return view('dashboard.audit', ['data' => $data]);
     }
 
@@ -182,7 +185,7 @@ class DashController extends Controller
 
     public function customers()
     {
-        $customers = kustomers::all(['id', 'businessname', 'usertype', 'phone', 'name', 'email']);
+        $customers = kustomers::orderBy('id', 'desc')->get(['id', 'businessname', 'usertype', 'phone', 'name', 'email', 'reg_date']);
         return view('dashboard.customers', ['collection' => $customers]);
     }
 
@@ -235,6 +238,7 @@ class DashController extends Controller
             ->join('users', 'merchant_id', '=', 'users.id')
             ->select('orders.id', 'orders.pepperestfees', 'orders.total', 'orders.totalprice', 'orders.orderRef',  'customers.name', 'users.name as merchant')
             ->whereBetween('orders.created_at', [$request->from, $request->to])
+            ->orderBy('orders.id', 'desc')
             ->get();
         //prepare file
         $output = '';

@@ -24,6 +24,7 @@
             <th class="sorting" tabindex="0"  rowspan="1" colspan="1"  style="width: 39px;">Merchant</th>
             <th class="sorting" tabindex="0"  rowspan="1" colspan="1"  style="width: 39px;">Amount</th>
             <th class="sorting" tabindex="0"  rowspan="1" colspan="1"  style="width: 39px;">Description</th>
+            <th class="sorting" tabindex="0"  rowspan="1" colspan="1"  style="width: 39px;">Date</th>
             <th class="sorting" tabindex="0"  rowspan="1" colspan="1"  style="width: 26px;">Details</th>
         </tr>
     </thead>
@@ -36,6 +37,7 @@
             <td>{{ $item->merchant_email }}</td>
             <td>{{ number_format($item->amount,2) }}</td>
             <td>{{ $item->description }}</td>
+            <td>{{ $item->posting_date }}</td>
           
             <td><a href="{{ route('details', ['id' => $item->id]) }}" class="btn btn-primary btn-sm pl-3 pr-3">Details</a></td>
       

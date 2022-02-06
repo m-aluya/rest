@@ -93,6 +93,7 @@
 
                                     <th class="sorting_asc" tabindex="0" aria-controls="zero_configuration_table" rowspan="1" colspan="1" style="width: 46px;">Order Ref</th>
                                     <th class="sorting" tabindex="0" aria-controls="zero_configuration_table" rowspan="1" colspan="1" aria-label="Office: activate to sort column ascending" style="width: 39px;">Merchant ID</th>
+                                    <th class="sorting" tabindex="0" aria-controls="zero_configuration_table" rowspan="1" colspan="1" aria-label="Office: activate to sort column ascending" style="width: 39px;">Date</th>
                                     <th class="sorting" tabindex="0" aria-controls="zero_configuration_table" rowspan="1" colspan="1" style="width: 20px;"></th>
                                 </tr>
                             </thead>
@@ -107,6 +108,7 @@
                                     
                                     <td>{{ $item->orderRef }}</td>
                                     <td class="text-capitalize">{{ $item->merchant }}</td>
+                                    <td class="text-capitalize">{{ $item->created_at }}</td>
                                     <td><a href="{{ route('order.details', ['id' => $item->id]) }}" class="btn btn-primary btn-sm pl-3 pr-3">Details</a></td>
                               
                                 </tr> 
