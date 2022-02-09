@@ -11,19 +11,83 @@ use App\Models\Shipments;
 use App\Models\Audit;
 use App\Models\Customers;
 use App\Models\kustomers;
+use Carbon\Carbon;
+
 
 
 class DashController extends Controller
 {
     public function dashboard()
     {
-        return view('dashboard.dashboard');
+        $totalCustomers = DB::table('customers')->count();
+        $customerLastWeek  = DB::table('customers')
+            ->whereBetween(
+                'reg_date',
+                [Carbon::now()->subWeek()->startOfWeek(), Carbon::now()->subWeek()->endOfWeek()]
+            )
+            ->count();
+
+
+        $customerThisWeek  = DB::table('customers')
+            ->whereBetween('reg_date', [Carbon::now()->subWeek()->format("Y-m-d H:i:s"), Carbon::now()->format("Y-m-d H:i:s")])
+            ->count();
+
+
+
+        if ($customerLastWeek < 1) {
+            $percentChange = 0;
+        } else {
+            $percentChange = ($customerThisWeek - $customerLastWeek) / $customerLastWeek * 100;
+        }
+
+
+
+        $totalOrders = DB::table('orders')->count();
+        $lastWeekOrder = DB::table('orders')
+            ->whereBetween(
+                'created_at',
+                [Carbon::now()->subWeek()->startOfWeek(), Carbon::now()->subWeek()->endOfWeek()]
+            )->count();
+
+
+        $thisWeekOrders =  DB::table('orders')
+            ->whereBetween('created_at', [Carbon::now()->subWeek()->format("Y-m-d H:i:s"), Carbon::now()->format("Y-m-d H:i:s")])
+            ->count();
+
+
+        if ($lastWeekOrder < 1) {
+            $percentChangeOrder = 0;
+        } else {
+            $percentChangeOrder = ($thisWeekOrders - $lastWeekOrder) / $lastWeekOrder * 100;
+        }
+
+        $totalOrderTransactions =   $totalOrders = DB::table('order_transactions')->count();
+        $totalOrderTransactionsLastWeek = DB::table('order_transactions')
+            ->whereBetween(
+                'created_at',
+                [Carbon::now()->subWeek()->startOfWeek(), Carbon::now()->subWeek()->endOfWeek()]
+            )->count();
+
+        $totalOrderTransactionsThisWeek =  DB::table('order_transactions')
+            ->whereBetween('created_at', [Carbon::now()->subWeek()->format("Y-m-d H:i:s"), Carbon::now()->format("Y-m-d H:i:s")])
+            ->count();
+
+
+        if ($totalOrderTransactionsLastWeek < 1) {
+            $percentChangeT = 0;
+        } else {
+            $percentChangeT = ($totalOrderTransactionsThisWeek -  $totalOrderTransactionsLastWeek) /  $totalOrderTransactionsLastWeek * 100;
+        }
+
+
+
+        return view('dashboard.dashboard', ['percentChangeT' => $percentChangeT,  'OrderTransactionsThisWeek' => $totalOrderTransactionsThisWeek,  'OrderTransactionsLastWeek' => $totalOrderTransactionsLastWeek,   'OrderTransactions' => $totalOrderTransactions, 'percentChangeOrder' => $percentChangeOrder,  'thisWeekOrders' => $thisWeekOrders, 'lastWeekOrder' => $lastWeekOrder,  'totalorders' => $totalOrders,  'percentChange' => ceil($percentChange), 'customersLastWeek' => $customerLastWeek, 'totalCustomers' => $totalCustomers, 'customersThisWeek' => $customerThisWeek]);
     }
 
     public function index()
     {
         $collection = DB::table('transactions')->orderBy('id', 'desc')
-                         ->get(['id', 'pepperest_fee', 'customer_email', 'merchant_email', 'amount', 'description', 'posting_date']);
+            ->get(['id', 'pepperest_fee', 'customer_email', 'merchant_email', 'amount', 'description', 'posting_date']);
 
         return view('dashboard.transactions', ['records' => collect($collection)]);
     }
