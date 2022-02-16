@@ -49,4 +49,16 @@ class AdminController extends Controller
     {
         return view('admin.password');
     }
+
+    public function show($id)
+    {
+        $admin = DB::table('admin')->where('id', $id)->get()->first();
+        return view('admin.details', ['admin' => collect($admin)]);
+    }
+
+    public function delete($id)
+    {
+        DB::table('admin')->delete($id);
+        return back()->with('delete', 'Delete successful');
+    }
 }

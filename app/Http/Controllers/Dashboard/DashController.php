@@ -247,16 +247,25 @@ class DashController extends Controller
 
 
 
-    public function customers()
+    public function customers($type)
     {
-        $customers = kustomers::orderBy('id', 'desc')->get(['id', 'businessname', 'usertype', 'phone', 'name', 'email', 'reg_date']);
+        // dd($type);
+        $customers = kustomers::orderBy('id', 'desc')->get(['id', 'businessname', 'usertype', 'phone', 'name', 'email', 'reg_date'])->where('usertype', $type);
         return view('dashboard.customers', ['collection' => $customers]);
     }
 
     public function customerdetails($id)
     {
-        $customer = collect(kustomers::findorfail($id));
-        return view('dashboard.cdetails', ['collection' => $customer]);
+        $data = DB::table('customers')
+            ->join('users', 'customers.id', '=', 'users.customerID')
+            ->select('customers.*', 'users.phoneNo', 'users.created_at')
+            ->where('customers.id', $id)
+            ->get()->first();
+        $customer = collect($data);
+        $customer->forget('pwd');
+        //$customer = collect(kustomers::findorfail($id));
+        $orders = DB::table('orders')->where('buyer_id', $id)->count();
+        return view('dashboard.cdetails', ['collection' => collect($customer), 'orders' => $orders]);
     }
 
 

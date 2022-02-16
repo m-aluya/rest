@@ -64,7 +64,7 @@ Route::get('/customers/{id}/details', [DashController::class, 'auditdetails'])->
 
 
 //users
-Route::get('/customers', [DashController::class, 'customers'])->name('customers')->middleware('auth');
+Route::get('/customers/{type}', [DashController::class, 'customers'])->name('customers')->middleware('auth');
 Route::get('/customers/{id}/details', [DashController::class, 'customerdetails'])->name('cdetails')->middleware('auth');
 Route::post('/customers/{id}/details', [DashController::class, 'block'])->name('customer.block')->middleware('auth');
 
@@ -74,6 +74,9 @@ Route::get('/admin', [AdminController::class, 'admin'])->name('admins')->middlew
 Route::post('/admin', [AdminController::class, 'saveAdmin'])->name('admin.post')->middleware('auth');
 
 Route::get('/admins', [AdminController::class, 'getAdmins'])->name('admin.manage')->middleware('auth');
+Route::get('/admins/{id}/details', [AdminController::class, 'show'])->name('admin.show')->middleware('auth');
+Route::get('/admins/{id}/delete', [AdminController::class, 'delete'])->name('admin.delete')->middleware('auth');
+
 
 Route::get('/password', [AdminController::class, 'password'])->name('password')->middleware('auth');
 

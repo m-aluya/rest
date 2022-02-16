@@ -80,7 +80,6 @@
                     @foreach ($menu as $key => $item)
                         <li class="nav-item">
                             @if ($key === 'disputes')
-
                         <li class="nav-item"><a class="nav-item-hold" href="{{ route('disputes') }}">
                                 <i class="nav-icon i-File-Clipboard-File--Text"></i><span
                                     class="nav-text">Disputes</span></a>
@@ -153,7 +152,7 @@
                 </ul>
 
                 <ul class="childNav" data-parent="sessions">
-                    <li class="nav-item"><a href="{{ route('customers') }}"><i
+                    <li class="nav-item"><a href="{{ route('customers', ['type' => 'both']) }}"><i
                                 class="nav-icon i-Add-User"></i><span class="item-name">Customers</span></a></li>
                     <li class="nav-item"><a href="{{ route('admins') }}"><i
                                 class="nav-icon i-Find-User"></i><span class="item-name">Add Admin Users</span></a>
