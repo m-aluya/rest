@@ -18,7 +18,8 @@
                 </div>
                 <div class="card text-left">
                     <div class="card-body">
-                        <h2 class="card-title mb-5 font-weight-bold">Customers</h2>
+                        <h2 class="card-title mb-5 font-weight-bold text-capitalize">Customers:
+                            {{ request()->segment(count(request()->segments())) }}</h2>
 
 
 
