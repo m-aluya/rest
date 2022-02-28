@@ -72,7 +72,7 @@
                                                         <td class="text-capitalize">{{ $item->name }}</td>
                                                         <td class="text-capitalize">{{ $item->businessname }}</td>
                                                         <td class="text-capitalize"><a title="click to call"
-                                                                href="tel:{{ $item->phone }}">{{ $item->phone }}</a>
+                                                                href="tel:{{ $item->phone }}">{{ $item->phoneNo }}</a>
                                                         </td>
                                                         <td class="text-lowercase">{{ $item->email }}</td>
                                                         <td class="text-lowercase">{{ $item->reg_date }}</td>
