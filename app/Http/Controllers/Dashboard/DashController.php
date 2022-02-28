@@ -250,7 +250,15 @@ class DashController extends Controller
     public function customers($type)
     {
         // dd($type);
-        $customers = kustomers::orderBy('id', 'desc')->get(['id', 'businessname', 'usertype', 'phone', 'name', 'email', 'reg_date'])->where('usertype', $type);
+        //$customers = kustomers::orderBy('id', 'desc')->get(['id', 'businessname', 'usertype', 'phone', 'name', 'email', 'reg_date'])->where('usertype', $type);
+
+        $customers = DB::table('customers')
+            ->join('users', function ($join) use ($type) {
+                $join->on('users.id', '=', 'customers.id')
+                    ->where('customers.usertype', '=', $type);
+            })
+            ->get();
+
         return view('dashboard.customers', ['collection' => $customers]);
     }
 
