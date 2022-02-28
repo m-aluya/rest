@@ -283,14 +283,14 @@ class DashController extends Controller
 
         $customer = kustomers::find($request->id);
         if ($customer->accountstatus == 0) {
-            $customer->accountstatus = 1;
+            DB::table('customers')->where('id', $request->id)->update(['accountstatus' => 1]);
+            //$customer->accountstatus = 1;
             $action = 'blocked';
         } else {
             $action = 'unblocked';
-            $customer->accountstatus = 0;
+            DB::table('customers')->where('id', $request->id)->update(['accountstatus' => 0]);
         }
 
-        $customer->save();
         return back()->with('message', 'The selected customer account has been ' . $action);
     }
 
