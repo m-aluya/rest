@@ -256,7 +256,7 @@ class DashController extends Controller
             ->join('users', function ($join) use ($type) {
                 $join->on('users.id', '=', 'customers.id')
                     ->where('customers.usertype', '=', $type);
-            })
+            })->orderBy('users.created_at', 'desc')
             ->get();
 
         return view('dashboard.customers', ['collection' => $customers]);
@@ -291,7 +291,7 @@ class DashController extends Controller
             DB::table('customers')->where('id', $request->id)->update(['accountstatus' => 0]);
         }
 
-        return back()->with('message', 'The selected customer account has been ' . $action);
+        return back()->with('message', 'Successfully ' . $action . ' customer');
     }
 
     public function filterTransaction(Request $request)

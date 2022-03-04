@@ -22,7 +22,9 @@
                             {{ request()->segment(count(request()->segments())) }}</h2>
 
 
-
+                        <pre>
+                {{ $collection->toJson() }}
+            </pre>
 
 
                         <div class="table-responsive">
@@ -75,7 +77,7 @@
                                                                 href="tel:{{ $item->phone }}">{{ $item->phoneNo }}</a>
                                                         </td>
                                                         <td class="text-lowercase">{{ $item->email }}</td>
-                                                        <td class="text-lowercase">{{ $item->reg_date }}</td>
+                                                        <td class="text-lowercase">{{ $item->created_at }}</td>
 
                                                         <td><a href="{{ route('cdetails', ['id' => $item->id]) }}"
                                                                 class="btn btn-primary btn-sm pl-3 pr-3">Details</a></td>
