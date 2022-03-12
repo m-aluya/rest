@@ -11,12 +11,30 @@ use App\Models\Shipments;
 use App\Models\Audit;
 use App\Models\Customers;
 use App\Models\kustomers;
+use App\Models\Referral;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Hash;
 
 
 
 class DashController extends Controller
 {
+   
+    public function generateUniqueID($email)
+    {
+        if (!is_null($email)) {
+            $arr = explode("@", $email);
+            return $arr[0] .'-'.time();
+        }
+        return '-'.time();
+    }
+
+    public function generateReferralCode($l = 8)
+    {
+        return substr(md5(uniqid(mt_rand(), true)), 0, $l);
+    }
+
+
     public function dashboard()
     {
         $totalCustomers = DB::table('customers')->count();
@@ -254,7 +272,7 @@ class DashController extends Controller
 
         $customers = DB::table('customers')
             ->join('users', function ($join) use ($type) {
-                $join->on('users.id', '=', 'customers.id')
+                $join->on('users.customerID', '=', 'customers.id')
                     ->where('customers.usertype', '=', $type);
             })->orderBy('users.created_at', 'desc')
             ->get();
@@ -262,12 +280,78 @@ class DashController extends Controller
         return view('dashboard.customers', ['collection' => $customers]);
     }
 
+    public function addCustomerForm(){
+        return view('dashboard.customer_add');
+    }
+
+    public function addCustomer(Request $request)
+    {
+        $this->validate($request, [
+            'name' => 'required',
+            'email' => 'required|email|unique:users',
+            'password' => 'required|min:4',
+            'phone_no' => 'nullable|numeric',
+            'acct_type' => 'required|string',
+            'businessName' => 'nullable|string|max:255',
+            'referral_code' => 'nullable|string|max:25',
+        ]);
+
+        try{
+            $name = $request->input('name');
+            $name_arr = explode (" ", $name);
+            $user = Customers::create([
+                'name' => $request->input('name'),
+                'firstName' =>  isset($name_arr[0]) ? $name_arr[0] : null,
+                'lastName' =>  isset($name_arr[1]) ? $name_arr[1] : null,
+                'email' => $request->input('email'),
+                'password' => Hash::make($request->input('password')),
+            ]);
+
+            //dd($user);
+
+            $customer = kustomers::create([
+                  'email' => $request->input('email'),
+                  'name' => $user->name,
+                  'businessname' => $request->input('businessName'), 
+                  'phone' => $request->input('phone_no'), 
+                  'usertype' => $request->input('acct_type'),
+                  'merchantid' => $this->generateUniqueID($request->input('email')),
+                  'referral_code' => $this->generateReferralCode()
+            ]);
+
+            if (!is_null($customer)) {
+              $user->update(['customerID' => $customer->id]);
+              
+              if ($request->filled('referral_code')) {
+                $referrer = kustomers::where('referral_code', $request->input('referral_code'))->first();
+                if (!is_null($referrer)) {
+                  Referral::create(['referrer_id' => $referrer->id, 
+                    'customer_id' => $customer->id, 
+                    'customer_type' => $customer->usertype
+                  ]);
+                }
+                
+              }
+            }
+
+            if ($user && !is_null($customer)) {
+                return redirect()->route('customers', ['type' => 'both'])->with('success', 'Customer was Created Successfully. Inform the customer to change the password after login.');
+            } else {
+                return redirect()->back()->with('error', 'Customer Creation Failed. Please try again.');
+            }
+            
+        } catch (Exception $e) {
+            return redirect()->back()->with('error', 'Customer Creation Failed with error: '. $e->getMessage());
+        }
+        
+    }
+
     public function customerdetails($id)
     {
         $data = DB::table('customers')
             ->join('users', 'customers.id', '=', 'users.customerID')
-            ->select('customers.*', 'users.phoneNo', 'users.created_at')
-            ->where('customers.id', $id)
+            ->select('customers.*', 'customers.phone', 'users.created_at')
+            ->where('users.id', $id)
             ->get()->first();
         $customer = collect($data);
         $customer->forget('pwd');
