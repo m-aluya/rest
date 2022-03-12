@@ -148,12 +148,15 @@
                                 class="item-name">Invoice</span></a></li>
                     <li class="nav-item"><a href="{{ route('transactions') }}"><span
                                 class="item-name">Transactions</span></a></li>
+                    <li class="nav-item"><a href="{{ route('customers', ['type' => 'both']) }}"><i
+                                class="nav-icon i-Add-User"></i><span class="item-name">Customers</span></a></li>
 
                 </ul>
 
                 <ul class="childNav" data-parent="sessions">
                     <li class="nav-item"><a href="{{ route('customers', ['type' => 'both']) }}"><i
                                 class="nav-icon i-Add-User"></i><span class="item-name">Customers</span></a></li>
+
                     <li class="nav-item"><a href="{{ route('admins') }}"><i
                                 class="nav-icon i-Find-User"></i><span class="item-name">Add Admin Users</span></a>
                     </li>

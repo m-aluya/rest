@@ -65,6 +65,8 @@ Route::get('/customers/{id}/details', [DashController::class, 'auditdetails'])->
 
 //users
 Route::get('/customers/{type}', [DashController::class, 'customers'])->name('customers')->middleware('auth');
+Route::get('/customer/get', [DashController::class, 'addCustomerForm'])->name('customer.add.get')->middleware('auth');
+Route::post('/customer/add', [DashController::class, 'addCustomer'])->name('customer.add')->middleware('auth');
 Route::get('/customers/{id}/details', [DashController::class, 'customerdetails'])->name('cdetails')->middleware('auth');
 Route::post('/customers/{id}/details', [DashController::class, 'block'])->name('customer.block')->middleware('auth');
 

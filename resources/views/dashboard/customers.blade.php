@@ -15,6 +15,10 @@
                         </select>
                     </div>
 
+                    <div class="col-md-4 mt-2">
+                        <a href="{{ route('customer.add.get') }}" class="btn btn-primary">Register new Merchant/Buyer</a>
+                    </div>
+
                 </div>
                 <div class="card text-left">
                     <div class="card-body">
@@ -23,7 +27,7 @@
 
 
                         <pre>
-                {{ $collection->toJson() }}
+                
             </pre>
 
 
