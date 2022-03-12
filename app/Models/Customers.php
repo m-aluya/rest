@@ -10,6 +10,6 @@ class Customers extends Model
     use HasFactory;
     protected $table = 'users';
     protected $fillable = [
-        'name', 'firstName', 'lastName', 'email', 'password', 'status', 'customerID', 'super_admin', 'app_id', 'account_type', 'job_title'
+        'name', 'firstName', 'lastName', 'email', 'password', 'status', 'customerID', 'phoneNo', 'super_admin', 'app_id', 'account_type', 'job_title'
     ];
 }
