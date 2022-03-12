@@ -303,6 +303,7 @@ class DashController extends Controller
                 'name' => $request->input('name'),
                 'firstName' =>  isset($name_arr[0]) ? $name_arr[0] : null,
                 'lastName' =>  isset($name_arr[1]) ? $name_arr[1] : null,
+                'phoneNo' => $request->input('phone_no'),
                 'email' => $request->input('email'),
                 'password' => Hash::make($request->input('password')),
             ]);
